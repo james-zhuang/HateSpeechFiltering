@@ -2,14 +2,11 @@
   "name": "Hate Speech Filter",
   "version": "0.1.0",
   "description": "Identifies hate speech on Twitter and hides malignant tweets behind a toggleable warning",
-  "manifest_version": 3,
-  "background": {
-      "service_worker": "background.js"
-  },
-  "permissions": [
-      "tabs"
-  ],
-  "host_permissions": [
-      "https://twitter.com/*"
-  ]
+  "manifest_version": 2,
+  "content_scripts": [{
+      "matches": ["https://twitter.com/*"],
+      "js": ["node_modules/jquery/dist/jquery.min.js", "script.js"],
+      "css": ["style.css"]
+
+  }]
 }
