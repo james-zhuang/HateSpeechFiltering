@@ -8,13 +8,30 @@ let observer = new MutationObserver((mutationRecords, obs) => {
                 //traverse to tweet text area
                 let tweetArea = $(node).find(tweetLabel).children().last().children().last()
                 let tweetContent = $(tweetArea).children().not(":last")
-
+                
                 if ($(tweetContent).length > 0) {       //if node is valid tweet
                     let tweet = $(tweetContent).text()
-                    console.log("tweet: " + tweet)
+                    // console.log("tweet: " + tweet)
                     //code here to check if tweet is hate speech
                     // if is hate speech
-                    hideContent(tweetArea, tweetContent)
+                    let urlEndpoint = "http://127.0.0.1:8000"
+                    $.ajax({
+                        'url' : urlEndpoint + "/predict",
+                        'type' : 'GET',
+                        'data' : {
+                            'text' : tweet
+                        },
+                        'success' : function(response) {              
+                            if (response == true) {
+                                //it is hate speech, hide content
+                                hideContent(tweetArea, tweetContent)
+                            }
+                        },
+                        'error' : function(request,error)
+                        {
+                            console.log("Request: "+JSON.stringify(request));
+                        }
+                    })
                 }
             })
         })
