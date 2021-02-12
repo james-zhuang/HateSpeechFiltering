@@ -10,33 +10,27 @@ let observer = new MutationObserver((mutationRecords, obs) => {
                 let tweetContent = $(tweetArea).children().not(":last")
                 if ($(tweetContent).length > 0) {
                     console.log("tweet: " + $(tweetContent).text())
-                    $(tweetContent).hide()
-                    $(tweetArea).prepend("<div class='css-1dbjc4n'> \
-                                            <p lang='en' dir='auto' class='r-1fmj7o5 r-1qd0xha r-a023e6 r-16dba41 r-ad9z0x r-bcqeeo r-bnwqim r-qvutc0'> \
-                                                This tweet has been hidden. Clicked to show the original tweet. \
-                                            </p> \
-                                        </div>")
-                    console.log(tweetContent)
+                    hideContent(tweetArea, tweetContent)
                 }
             })
         })
     }
-
-    // if ( $("nav").length >= 2) {                                    // Make sure Twitter has loaded tweet area
-    //     feed = $("div[aria-label='Timeline: Tweet’s Tweets']")      // Tweet feed container
-    //     mutationRecords.forEach(record => {
-    //         record.addedNodes.forEach(node => {
-    //             if ($(feed).has(node).length > 0) {                 // Node is in tweet area
-    //                 if ($(node).has("[data-testid=tweet]").length > 0) {        // Node contains tweet
-    //                     // console.log(record)
-    //                     // console.log("node: " + $(node).text())
-    //                     console.log($(node).has("article"))
-    //                     $(node).addClass("tweet")
-    //                 }
-    //             }
-    //         })
-    //     })
-    // }
 })
 
 observer.observe($("body")[0], {subtree: true, childList: true})
+
+function hideContent (tweetArea, tweetContent) {
+    $(tweetContent).hide().removeClass("filtered").off("click")
+    let hideMessage = $("<p lang='en' dir='auto' class='r-1fmj7o5 r-1qd0xha r-a023e6 r-16dba41 r-ad9z0x r-bcqeeo r-bnwqim r-qvutc0'> \
+                            ⚠ This tweet has been hidden for containing hate speech content. Click to reveal the original tweet. ⚠ \
+                        </p>")
+    $(tweetArea).prepend(hideMessage)
+    $(hideMessage).addClass("filtered").on("click", function(e) {
+        e.preventDefault()
+        $(hideMessage).remove()
+        $(tweetContent).show().addClass("filtered").on("click", function (e) {
+            e.preventDefault()
+            hideContent(tweetArea, tweetContent)
+        })
+    })
+}

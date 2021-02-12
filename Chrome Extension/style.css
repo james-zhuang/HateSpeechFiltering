@@ -3,5 +3,6 @@
 }
 
 .filtered {
-    white-space: normal !important;
+    background-color: rgba(84, 84, 84, 0.47) !important;
+    padding: 5px;
 }
