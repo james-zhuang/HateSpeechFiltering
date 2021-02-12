@@ -1,3 +1,7 @@
 .tweet {
     background: red !important;
 }
+
+.filtered {
+    white-space: normal !important;
+}

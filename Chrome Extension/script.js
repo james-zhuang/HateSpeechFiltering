@@ -6,10 +6,16 @@ let observer = new MutationObserver((mutationRecords, obs) => {
         mutationRecords.forEach(record => {
             record.addedNodes.forEach(node => {
                 //traverse to tweet text area
-                let tweetContent = $(node).find(tweetLabel).children().last().children().last().children().not(":last")
+                let tweetArea = $(node).find(tweetLabel).children().last().children().last()
+                let tweetContent = $(tweetArea).children().not(":last")
                 if ($(tweetContent).length > 0) {
-                    $(tweetContent).addClass("tweet")
                     console.log("tweet: " + $(tweetContent).text())
+                    $(tweetContent).hide()
+                    $(tweetArea).prepend("<div class='css-1dbjc4n'> \
+                                            <p lang='en' dir='auto' class='r-1fmj7o5 r-1qd0xha r-a023e6 r-16dba41 r-ad9z0x r-bcqeeo r-bnwqim r-qvutc0'> \
+                                                This tweet has been hidden. Clicked to show the original tweet. \
+                                            </p> \
+                                        </div>")
                     console.log(tweetContent)
                 }
             })
