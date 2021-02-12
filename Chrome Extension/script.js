@@ -2,14 +2,18 @@
 let tweetLabel = "[data-testid=tweet]"
 
 let observer = new MutationObserver((mutationRecords, obs) => {
-    if ($(tweetLabel).length > 0) {                    //Tweets have loaded
+    if ($(tweetLabel).length > 0) {       //Ensure tweets have loaded
         mutationRecords.forEach(record => {
             record.addedNodes.forEach(node => {
                 //traverse to tweet text area
                 let tweetArea = $(node).find(tweetLabel).children().last().children().last()
                 let tweetContent = $(tweetArea).children().not(":last")
-                if ($(tweetContent).length > 0) {
-                    console.log("tweet: " + $(tweetContent).text())
+
+                if ($(tweetContent).length > 0) {       //if node is valid tweet
+                    let tweet = $(tweetContent).text()
+                    console.log("tweet: " + tweet)
+                    //code here to check if tweet is hate speech
+                    // if is hate speech
                     hideContent(tweetArea, tweetContent)
                 }
             })
