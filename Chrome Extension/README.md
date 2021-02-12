@@ -1,5 +1,5 @@
 
-#Hate Speech Filtering
+# Hate Speech Filtering
 
 
 To start localhost server, use the following command:
