@@ -1,5 +1,6 @@
 
 let tweetLabel = "[data-testid=tweet]"
+let cache = {}
 
 let observer = new MutationObserver((mutationRecords, obs) => {
     if ($(tweetLabel).length > 0) {       //Ensure tweets have loaded
@@ -11,27 +12,32 @@ let observer = new MutationObserver((mutationRecords, obs) => {
                 
                 if ($(tweetContent).length > 0) {       //if node is valid tweet
                     let tweet = $(tweetContent).text()
-                    // console.log("tweet: " + tweet)
                     //code here to check if tweet is hate speech
                     // if is hate speech
-                    let urlEndpoint = "http://127.0.0.1:8000"
-                    $.ajax({
-                        'url' : urlEndpoint + "/predict",
-                        'type' : 'GET',
-                        'data' : {
-                            'text' : tweet
-                        },
-                        'success' : function(response) {              
-                            if (response == true) {
-                                //it is hate speech, hide content
-                                hideContent(tweetArea, tweetContent)
+
+                    if (!cache[tweet]) {
+                        let urlEndpoint = "http://127.0.0.1:8000"
+                        $.ajax({
+                            'url' : urlEndpoint + "/predict",
+                            'type' : 'GET',
+                            'data' : {
+                                'text' : tweet
+                            },
+                            'success' : function(response) {              
+                                if (response == true) {
+                                    //it is hate speech, hide content
+                                    cache[tweet] = true
+                                    hideContent(tweetArea, tweetContent)
+                                }
+                            },
+                            'error' : function(request,error)
+                            {
+                                console.log("Request: "+JSON.stringify(request));
                             }
-                        },
-                        'error' : function(request,error)
-                        {
-                            console.log("Request: "+JSON.stringify(request));
-                        }
-                    })
+                        })
+                    } else {
+                        hideContent(tweetArea, tweetContent)
+                    }
                 }
             })
         })

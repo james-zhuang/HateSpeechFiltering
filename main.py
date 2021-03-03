@@ -3,6 +3,7 @@ import numpy as np
 import pickle as pkl
 from fastapi.middleware.cors import CORSMiddleware
 import bert_model
+import time
 
 app = FastAPI()
 app.add_middleware(
@@ -20,14 +21,14 @@ app.add_middleware(
 # Hello World route
 @app.get("/")
 def read_root():
-    return {"Hello": "World"}
+    return {"Hello": "API endpoint is running"}
 
 
 @app.get("/predict/")
 def predict(text: str):
-
+    # time.sleep(0.3)
     res = bert_model.pipeline_(text) # returns a list of dictionaries with label and score
-    if res[0]['label'] == 'hatespeech' or res[0]['label'] == 'offensive':
+    if res[0]['label'] == 'hate speech' or res[0]['label'] == 'offensive':
         return True
     else:
         return False
