@@ -1,2 +1,7 @@
 runtime: python3.8
-entrypoint: gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app
+entrypoint: gunicorn -w 1 -k uvicorn.workers.UvicornWorker main:app
+env: flex
+resources:
+  cpu: 1
+  memory_gb: 0.5
+  disk_size_gb: 10
