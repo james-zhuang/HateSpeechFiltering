@@ -16,7 +16,7 @@ let observer = new MutationObserver((mutationRecords, obs) => {
                     // if is hate speech
 
                     if (!cache[tweet]) {
-                        let urlEndpoint = "http://127.0.0.1:8000"
+                        let urlEndpoint = "https://twitter-hate-speech-api-dot-cs329s-final-project.wl.r.appspot.com"
                         $.ajax({
                             'url' : urlEndpoint + "/predict",
                             'type' : 'GET',

@@ -1,7 +1,9 @@
-runtime: python3.8
+service: twitter-hate-speech-api
+runtime: python38
 entrypoint: gunicorn -w 1 -k uvicorn.workers.UvicornWorker main:app
-env: flex
+#env: flex
+instance_class: F4_1G
 resources:
-  cpu: 1
-  memory_gb: 0.5
-  disk_size_gb: 10
+  cpu: 4
+  memory_gb: 16
+  disk_size_gb: 30
