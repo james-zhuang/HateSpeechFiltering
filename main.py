@@ -21,7 +21,7 @@ pipeline_ = None
 @app.on_event("startup")
 async def startup_event():
     global pipeline_
-    tokenizer = AutoTokenizer.from_pretrained("Hate-speech-CNERG/bert-base-uncased-hatexplain")
+    tokenizer = AutoTokenizer.from_pretrained("Hate-speech-CNERG/bert-base-uncased-hatexplain", use_fast=False)
     model = AutoModelForSequenceClassification.from_pretrained("./pretrained_model")
     pipeline_ = pipeline('sentiment-analysis', model=model, tokenizer=tokenizer)
 
@@ -44,4 +44,3 @@ async def predict(text: str):
     # else:
     #     return False
     # return "Got it!"
-
