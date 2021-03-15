@@ -13,14 +13,10 @@ let observer = new MutationObserver((mutationRecords, obs) => {
 
 
                 if ($(tweetContent).length > 0) {       //if node is valid tweet
+
+                    if (/Replying to @/.test(tweet)) tweetContent = $(tweetContent).not(":first") //Remove unnecessary text in Tweet replies
+
                     let tweet = $(tweetContent).text()
-
-                    //Remove unnecessary text in Tweet replies
-                    if (/Replying to @/.test(tweet)) {
-                        tweetContent = $(tweetContent).not(":first")
-                        tweet = $(tweetContent).text()
-                    }
-
                     createHateFlag(tweetToolBar, tweetArea, tweetContent)
 
                     //Check if tweet is hate speech and remove if so
