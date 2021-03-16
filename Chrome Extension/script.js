@@ -14,7 +14,8 @@ let observer = new MutationObserver((mutationRecords, obs) => {
 
                 if ($(tweetContent).length > 0) {       //if node is valid tweet
 
-                    if (/Replying to @/.test(tweet)) tweetContent = $(tweetContent).not(":first") //Remove unnecessary text in Tweet replies
+
+                    if (/Replying to @/.test(tweetContent)) tweetContent = $(tweetContent).not(":first") //Remove unnecessary text in Tweet replies
 
                     let tweet = $(tweetContent).text()
                     createHateFlag(tweetToolBar, tweetArea, tweetContent)
@@ -124,6 +125,22 @@ function toggleHateFilter(tweetArea, tweetContent) {
     if (sendTweet) {
         let tweet = $(tweetContent).text()
         // Report text for being hate speech
+        let urlEndpoint = "https://twitter-hate-speech-api-dot-cs329s-final-project.wl.r.appspot.com"
+        let request_payload = '{ "tweet_text" : "' + tweet + '" }'
+        $.ajax({
+            'url' : urlEndpoint + "/flag_tweet",
+            'type' : 'POST',
+            'data' : request_payload,
+            'dataType': "application/json",
+            'contentType': "application/json",
+            'success' : function(response) {
+                alert("Thank you for the feedback. The tweet was flagged as hate speech.")
+            },
+            'error' : function(request,error)
+            {
+                console.log("Request: "+JSON.stringify(request));
+            }
+        })
     } else {
         // Report text for not being hate speech
     }
