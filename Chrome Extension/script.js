@@ -18,6 +18,7 @@ let observer = new MutationObserver((mutationRecords, obs) => {
 
                     let tweet = $(tweetContent).text()
                     createHateFlag(tweetToolBar, tweetArea, tweetContent)
+                    let hateFlag = $(tweetArea).find('[aria-label="Flag Hate Speech"]')
 
                     //Check if tweet is hate speech and remove if so
                     if (!cache[tweet]) {
