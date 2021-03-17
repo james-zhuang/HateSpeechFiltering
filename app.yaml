@@ -22,6 +22,7 @@ env_variables:
   CLOUD_SQL_PASSWORD: cs329s
   CLOUD_SQL_DATABASE_NAME: tweets_db
   CLOUD_SQL_CONNECTION_NAME: cs329s-final-project:us-west2:cs329s-tweet-database
+  PYTHONHASHSEED: 0
 beta_settings:
   cloud_sql_instances: cs329s-final-project:us-west2:cs329s-tweet-database
 handlers:
