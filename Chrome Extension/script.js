@@ -14,7 +14,7 @@ let observer = new MutationObserver((mutationRecords, obs) => {
 
                 if ($(tweetContent).length > 0) {       //if node is valid tweet
 
-                    if (/Replying to @/.test(tweet)) tweetContent = $(tweetContent).not(":first") //Remove unnecessary text in Tweet replies
+                    if (/Replying to @/.test($(tweetContent).text())) tweetContent = $(tweetContent).not(":first") //Remove unnecessary text in Tweet replies
 
                     let tweet = $(tweetContent).text()
                     createHateFlag(tweetToolBar, tweetArea, tweetContent)
@@ -86,13 +86,13 @@ function createHateFlag(tweetToolBar, tweetArea, tweetContent) {
                             </div>\
                         </div>\
                     </div>')
-    $(tweetToolBar).append(hateFlag)
+    //$(tweetToolBar).append(hateFlag).append('<span> Flag / Unflag tweet as hate speech </span>')
 
-    $(hateFlag).mouseover(function() {
+    $(hateFlag).mouseenter(function() {
             flagRed(hateFlag)
     })
-    $(hateFlag).mouseout(function() {
-        if (tweetArea.find('p').length > 0 )
+    $(hateFlag).mouseleave(function() {
+        if (tweetArea.find('.filtered').length > 0 )
             flagRed(hateFlag)
         else
             flagNormal(hateFlag)
