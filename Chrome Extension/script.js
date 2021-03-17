@@ -14,11 +14,11 @@ let observer = new MutationObserver((mutationRecords, obs) => {
 
                 if ($(tweetContent).length > 0) {       //if node is valid tweet
 
-
-                    if (/Replying to @/.test(tweetContent)) tweetContent = $(tweetContent).not(":first") //Remove unnecessary text in Tweet replies
+                    if (/Replying to @/.test($(tweetContent).text())) tweetContent = $(tweetContent).not(":first") //Remove unnecessary text in Tweet replies
 
                     let tweet = $(tweetContent).text()
-                    createHateFlag(tweetToolBar, tweetArea, tweetContent)
+                    if (tweetToolBar.children().length > 3 && $(tweetArea).find('[aria-label="Flag Hate Speech"]').length == 0)
+                        createHateFlag(tweetToolBar, tweetArea, tweetContent)
                     let hateFlag = $(tweetArea).find('[aria-label="Flag Hate Speech"]')
 
                     //Check if tweet is hate speech and remove if so
@@ -90,17 +90,36 @@ function createHateFlag(tweetToolBar, tweetArea, tweetContent) {
                     </div>')
     $(tweetToolBar).append(hateFlag)
 
-    $(hateFlag).mouseover(function() {
-            flagRed(hateFlag)
+    $(hateFlag).mouseenter(function() {
+        flagRed(hateFlag)
+        hateFlag.children().children().children().children().first().removeClass('r-1niwhzg').addClass('r-wcu338-hs')
     })
-    $(hateFlag).mouseout(function() {
-        if (tweetArea.find('p').length > 0 )
+    $(hateFlag).mouseleave(function() {
+        if (tweetArea.find('.filtered').length > 0 )
             flagRed(hateFlag)
         else
             flagNormal(hateFlag)
+        hateFlag.children().children().children().children().first().removeClass('r-wcu338-hs').addClass('r-1niwhzg')
     })
     $(hateFlag).click(function() {
-        toggleHateFilter(tweetArea, tweetContent)
+        let offset = $(this).offset()
+        let text = ""
+        if (tweetArea.find('.filtered').length > 0 ) text = "Un-Flag Hate Speech"
+        else text = "Flag Hate Speech"
+        let popup = $(`<span class="popup r-kemski css-1dbjc4n" style="left:${offset.left - 60}px; top:${offset.top}px;">${text}</span>`)
+        let blocker = $('<div class ="blocker"></div>')
+        $("body").append(popup).append(blocker)
+        popup.click(function() {
+            toggleHateFilter(tweetArea, tweetContent)
+            popup.remove()
+            blocker.remove()
+        })
+        blocker.click(function() {
+            console.log("Remove")
+            popup.remove()
+            blocker.remove()
+        })
+        // toggleHateFilter(tweetArea, tweetContent)
     })
 }
 
@@ -148,9 +167,9 @@ function toggleHateFilter(tweetArea, tweetContent) {
 }
 
 function flagRed(hateFlag) {
-    $(hateFlag).children().children().removeClass("r-9ilb82").addClass('r-daml9f-hs').children().children().first().removeClass('r-1niwhzg').addClass('r-wcu338-hs')
+    $(hateFlag).children().children().removeClass("r-9ilb82").addClass('r-daml9f-hs')
 }
 
 function flagNormal(hateFlag) {
-    $(hateFlag).children().children().removeClass("r-daml9f-hs").addClass('r-9ilb82').children().children().first().removeClass('r-wcu338-hs').addClass('r-1niwhzg')
+    $(hateFlag).children().children().removeClass("r-daml9f-hs").addClass('r-9ilb82')
 }
