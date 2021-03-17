@@ -73,6 +73,7 @@ function hideContent (tweetArea, tweetContent) {
 
 //Adds Tool For Flagging Hate Tweets
 function createHateFlag(tweetToolBar, tweetArea, tweetContent) {
+
     let addIndent = $('<div class="css-1dbjc4n r-xoduu5 r-1udh08x"><span class="css-901oao css-16my406 r-poiln3 r-n6v787 r-1sf4r6n r-1k6nrdp r-1e081e0 r-d3hbe1 r-1wgg2b2 r-axxi2z r-qvutc0"></span></div>')
     $(tweetToolBar).children().last().children().children().append(addIndent)
     let hateFlag = $('<div class="css-1dbjc4n r-18u37iz r-1h0z5md" aria-label="Flag Hate Speech">\
@@ -126,7 +127,7 @@ function toggleHateFilter(tweetArea, tweetContent) {
         let tweet = $(tweetContent).text()
         // Report text for being hate speech
         let urlEndpoint = "https://twitter-hate-speech-api-dot-cs329s-final-project.wl.r.appspot.com"
-        let request_payload = '{ "tweet_text" : "' + tweet + '" }'
+        let request_payload = '{ "tweet_text" : "' + tweet + ', "label: 1" }'
         $.ajax({
             'url' : urlEndpoint + "/flag_tweet",
             'type' : 'POST',
