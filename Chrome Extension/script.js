@@ -11,7 +11,6 @@ let observer = new MutationObserver((mutationRecords, obs) => {
                 let tweetContent = $(tweetArea).children().not(":last")
                 let tweetToolBar = $(tweetArea).children().last()
 
-
                 if ($(tweetContent).length > 0) {       //if node is valid tweet
 
                     if (/Replying to @/.test($(tweetContent).text())) tweetContent = $(tweetContent).not(":first") //Remove unnecessary text in Tweet replies
@@ -143,7 +142,7 @@ function toggleHateFilter(tweetArea, tweetContent) {
     }
 
     let urlEndpoint = "https://twitter-hate-speech-api-dot-cs329s-final-project.wl.r.appspot.com"
-    let tweet = $(tweetContent).text()
+    let tweet = $(tweetContent).text().replace(/[\n\r]/gm, "")
     let request_payload
     if (sendTweet) {
         // Report text for being hate speech
